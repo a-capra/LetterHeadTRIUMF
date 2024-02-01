@@ -1,0 +1,229 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{triumfletter17}
+\RequirePackage{color}
+\RequirePackage{graphicx}
+%\usepackage[textwidth=15.5cm,textheight=23cm,headheight=0pt,headsep=0pt,showframe]{geometry}
+%\usepackage[textwidth=15.5cm,textheight=23cm,headsep=0pt,showframe]{geometry}
+%\usepackage[textwidth=15.5cm,textheight=23cm,showframe]{geometry}
+%\usepackage[textheight=22.5cm]{geometry}   % Ewan + Isabel + Diana
+%\usepackage[textheight=22.5cm]{geometry}
+\usepackage{geometry}
+\geometry{      % Ewan + Isabel + Diana = define margins here for shifting everything
+ letterpaper,
+ left=19mm,
+ top=30mm,
+ bottom=19mm,
+ right=19mm,
+}
+\usepackage[T1]{fontenc}
+%
+\@ifclassloaded{letter}{
+\typeout{
+**************************************************************************
+This generates the new 2017 TRIUMF letter head. It should be printed on 
+a colour printer. 
+NOTE THAT YOU SHOULD ALWAYS INVOKE IT WITH 
+\protect\documentclass[12pt,letterpaper]{letter} 
+TO GET THE RIGHT FONT AND PAPER SIZE.
+I HAVEN'T FIGURED OUT HOW TO MAKE THE TRIUMF LETTER STYLE 
+OVERWRITE THE DEFAULT LETTER CLASS OPTIONS. I.M.Trigger 
+For concerns about the LaTeX implementation contact:
+I. Trigger, but bear in mind it was Byron Jennings who originally wrote it.
+*****************************************************************************}
+\renewcommand{\sfdefault}{phv} % actually Helvetica but apparently Arial is clone of Helvetica
+\renewcommand{\rmdefault}{phv} % also Helvetica now... do we have Helvetica Neue
+%
+% Official Palette off Website
+% 2017 Colours
+%primary (+black and white)
+    \definecolor{triumfblue}{cmyk}{1.0,0.0,0.0,0.0}% pure cyan% PANTONE Process Cyan C100 M0 Y0 K0 R58 G193 B227	#009fdf
+%secondary
+    \definecolor{triumfdarkgrey}{cmyk}{0.0,0.0,0.0,0.6}% PANTONE Cool Gray 10 C C0 M0 Y0 K60	R128 G130 B133	#666666
+    \definecolor{triumfmidgrey}{cmyk}{0.0,0.0,0.0,0.2}%PANTONE Cool Gray 2 CC0 M0 Y0 K20	R209 G211 B212	#CCCCCC 
+    \definecolor{triumflightgrey}{cmyk}{0.0,0.0,0.0,0.05}% PANTONE Cool Gray 1 C	C0 M0 Y0 K5	R241 G242 B242	#F1F2F2
+    \definecolor{triumfyellow}{cmyk}{0.0,0.2,1.0,0.0}%PANTONE P 7-8 C	C0 M20 Y100 K0	R225 G203 B5	#FFCB04
+%tertiary - I did not bother, but see http://www.triumf.ca/home/for-media/publicationsgallery/style-guide/colours
+%    
+
+%Define special fields for letter (phone extension, email - used to be
+%fax number...)
+\def\re#1{\def\retext{#1}}
+\def\retext{}
+\def\extension#1{\ifnum#1<1000 \typeout{
+                                TELEPHONE EXTENSION WRONG! IT WILL BE IGNORED!
+                                        }
+                  \else  
+                               \def\tellext{#1}
+                  \fi}
+\def\email#1{\def\BJ@email{#1}}
+\def\tellext{}
+\def\fax#1{\def\BJ@fnumber{#1}}
+\def\BJ@fnumber{}
+\def\BJ@email{}
+\def\@headingbj{}
+\newbox\@bjbox
+
+\parindent 0cm
+\newlength{\parskipp}
+\parskipp .7em plus 1pt %for spacings other then paragraph separation
+
+% make sure standard letter fields have sensible names
+\renewcommand*{\enclname}{Incl}
+\renewcommand*{\ccname}{CC}
+\renewcommand*{\cc}[1]{%
+  \typeout{redefining cc}
+  \par\noindent
+  \parbox[t]{\textwidth}{%
+    \@hangfrom{\normalfont\scriptsize\ccname: }%
+    \ignorespaces{\begin{scriptsize} #1 \end{scriptsize}}\strut}\par}
+\renewcommand*{\encl}[1]{%
+  \par\noindent
+  \parbox[t]{\textwidth}{%
+    \@hangfrom{\normalfont\scriptsize\enclname: }%
+    \ignorespaces{\begin{scriptsize} #1 \end{scriptsize}}\strut}\par}
+
+% lay out the footer When does this get applied? what is ps@letterf?
+% it is a pagestyle that will be used for the first page.
+\newcommand{\ps@letterf}{%
+\renewcommand{\@oddfoot}{% start of footer
+ \parbox[b]{1.2\textwidth}{\protect\color{triumfblue}
+  %\hspace{0mm} 
+  \vspace{-16mm}    %%  Ewan + Isabel + Diana = phone numbers etc. at correct height
+
+  {\parbox[t]{1.1\textwidth}{\footnotesize \vspace{20mm}
+   \parbox[t]{0.30\textwidth}{
+     t (604) \ifx\@empty\telephonenum 
+            \ifx\@empty\tellext 222.1047
+            \else \ifnum\tellext<4000 221 \tellext 
+            \else \ifnum\tellext<7000 222.1047 ext.~\tellext \\
+            \else 222.\tellext  \\
+            \fi
+            \fi
+            \fi
+            \else\telephonenum \\
+            \fi
+     \ifx\@empty\BJ@email 
+            \else \BJ@email{@}triumf.ca
+     \fi
+    \ 
+   }%end of box for phone and email
+   \parbox[t]{0.20\textwidth}{
+     www.triumf.ca \\
+     {@}TRIUMFLab
+   }%end of box for web and twitter
+   \parbox[t]{0.40\textwidth}{ 
+     4004 Wesbrook Mall\\  
+     Vancouver BC \quad  V6T 2A3 \quad Canada  
+   }%end of box for address
+ }
+ }% end of the box of tiny things
+
+   % Ewan + Isabel + Diana = placement of the Discovery accelerated wrt left margin and bottom and the "y," corner of "discovery,".  Make "Discovery" "D" align with rest of the the text along the bottom of the page.
+   {\parbox[t]{1.1\textwidth}{\vspace{-33mm}
+      \hspace{179mm}
+      \rotatebox{90}{\parbox[l]{3.1cm}{\bf\Large Discovery,\\accelerated} }
+   }
+   }
+
+
+
+%modified code for footer text
+%  {\parbox[t]{1.1\textwidth}{\footnotesize
+%   \parbox[t]{0.25\textwidth}{
+%     1 (604) \ifx\@empty\telephonenum 
+%            \ifx\@empty\tellext 222.1047
+%            \else \ifnum\tellext<4000 221 \tellext 
+%            \else \ifnum\tellext<7000 222.1047 ext.~\tellext \\
+%            \else 222.\tellext  \\
+%            \fi
+%            \fi
+%            \fi
+%            \else\telephonenum \\
+%            \fi
+%     \ifx\@empty\BJ@email 
+%            \else \BJ@email{@}triumf.ca
+%     \fi
+%    \ 
+%   }%end of box for phone and email
+%   \parbox[t]{0.25\textwidth}{
+%     www.triumf.ca \\
+%     {@}TRIUMFLab
+%   }%end of box for web and twitter
+%   \parbox[t]{0.45\textwidth}{
+%     4004 Wesbrook Mall\\  
+%     Vancouver BC \quad  V6T 2A3 \quad Canada  
+%   }%end of box for address
+% }% end of the box of tiny things
+% }
+
+
+%\hspace{7mm}
+ %\rotatebox{90}{\parbox[l]{3.1cm}{\bf\Large Discovery,\\accelerated} }
+
+} 
+ }%end of footer 
+}%end letterf pagestyle
+
+% as far as I can tell, it will do pagestyle letterf as an empty
+% preliminary address page, pagestyle empty for the header page (not
+% empty at all) and pagestyle plain for everything else.
+
+% print recipient name and address etc:
+\def\opening#1{%
+\ifx\@empty\fromaddress   % if there is nothing in the fromaddress (WHY?)
+  \thispagestyle{letterf} % apply the style defined above for the first page
+\ifx\@empty\@headingbj    % if we didn't fill the heading box yet with logo
+  % \def\@texttop{\ifnum\c@page=1\relax\fi}
+  \def\@texttop{\relax}   % I thought relax did nothing?
+  \def\@headingbj{13}
+    \setbox\@bjbox=\hbox{%
+    %\parbox{5cm}{\vspace*{-17.9mm} \hspace*{-19.4mm}\includegraphics[width=4.6cm]{TRIUMF_Logo_Blue.eps}}   %% Ewan - this puts logo at the very edge - extra distance required because of extra whitespace in the logo on the let edge
+    \parbox{5cm}{\vspace*{-4.1mm} \hspace*{-12.4mm}\includegraphics[width=4.6cm]{TRIUMF_Logo_Blue.eps}}   %% Ewan + Isabel + Diana = logo is 7mm x 7mm from corner 
+      %
+      \\\mbox{}
+% 
+    }%end of bjbox def - bjbox has the logo in it
+
+    % start of letter material here: 
+    \noindent{ \@date
+           \vskip 0pt plus .00006fil\relax  }
+\else \thispagestyle{empty}
+  {\rule{0pt}{0pt}\vskip 0pt plus .00006fil\relax} 
+  {\raggedleft\begin{tabular}{l}\ignorespaces\fromaddress \\*[2\parskipp]
+  \@date \end{tabular}\par}
+\fi
+ {\raggedright \toname \\ \toaddress \par} %might need to change spacing here
+% \re feature added by bcp (changed by BKJ)
+
+% end of header material
+
+{\samepage
+\ifnum\c@page=1\typeout{This is page 1}\else\typeout{This is another page}\fi
+\ifx\@empty\retext\vspace{2\parskipp}\else 
+ {\bf
+ \begin{list}{Re:}{
+ \settowidth{\labelwidth}{Re:}
+ \setlength{\leftmargin}{0cm}
+ \setlength{\labelsep}{5pt}
+ \addtolength{\leftmargin}{\labelwidth}
+ \addtolength{\leftmargin}{\labelsep}
+ \setlength{\rightmargin}{\leftmargin}}
+ \item \retext
+ \end{list}\par
+ }
+\fi\nobreak
+% end of \re
+\noindent #1\par\nobreak
+}%end samepage
+}%end "opening"
+}%end if classloaded letter
+
+% for more than 1 page:
+\pagestyle{plain}
+\providecommand{\@evenfoot}{}\providecommand{\@oddfoot}\providecommand{\@evenhead}{}\providecommand{\@oddhead}
+\renewcommand{\ps@plain}
+  \renewcommand{\@oddhead}{\usebox{\@bjbox}}
+  \renewcommand{\@oddfoot}{\parbox{1.2\textwidth}{\thepage\hspace{2pt} \color{triumfmidgrey}\rule[-1ex]{3.5pt}{0.7cm}\hfill \rotatebox{90}{ \parbox[l]{3.1cm}{\color{triumfblue}\bf\large Discovery,\\accelerated}}}}
+  \renewcommand{\@evenfoot}{\@oddfoot}
+  \renewcommand{\@evenhead}{\@oddhead}
+
